@@ -1,5 +1,5 @@
-yale,english,icon
-néih hóu,hello,speaker-icon.svg
-dō jeh,thank you,speaker-icon.svg
-jōi gin,goodbye,speaker-icon.svg
-jóu sān,good morning,speaker-icon.svg 
+yale,english,icon,audio
+néih hóu,hello,speaker-icon.svg,audio/neih-hou.mp3
+dō jeh,thank you,speaker-icon.svg,audio/do-jeh.mp3
+jōi gin,goodbye,speaker-icon.svg,audio/joi-gin.mp3
+jóu sān,good morning,speaker-icon.svg,audio/jou-san.mp3 

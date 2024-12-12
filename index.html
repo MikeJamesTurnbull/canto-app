@@ -4,73 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cantonese Vocabulary Cards</title>
-    <style>
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            padding: 1rem;
-        }
-
-        .card {
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            padding: 1.5rem;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .card-back {
-            transform: rotateY(180deg);
-        }
-
-        .yale {
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .english {
-            font-size: 1.4rem;
-            color: #444;
-            margin-bottom: 1rem;
-        }
-
-        .card svg {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-
-        .card svg:hover {
-            color: #4a90e2;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="card-container" id="cardContainer"></div>
@@ -87,7 +21,7 @@
                 rows.forEach(row => {
                     if (!row.trim()) return; // Skip empty rows
                     
-                    const [yale, english, iconFile] = row.split(',');
+                    const [yale, english, iconFile, audioFile] = row.split(',');
                     
                     const card = document.createElement('div');
                     card.className = 'card';
@@ -99,19 +33,25 @@
                             card.innerHTML = `
                                 <div class="card-inner">
                                     <div class="card-front">
-                                        <div class="yale">${yale}</div>
-                                        ${svgContent}
+                                        <div class="english">${english}</div>
                                     </div>
                                     <div class="card-back">
-                                        <div class="english">${english}</div>
+                                        <div class="yale">${yale}</div>
+                                        <button class="audio-button" data-audio="${audioFile}">
+                                            ${svgContent}
+                                        </button>
                                     </div>
                                 </div>
                             `;
 
                             // Add click event listener to flip the card
                             card.addEventListener('click', (e) => {
-                                // Don't flip if clicking the speaker icon
-                                if (!e.target.closest('svg')) {
+                                const audioButton = e.target.closest('.audio-button');
+                                if (audioButton) {
+                                    e.stopPropagation(); // Prevent card flip
+                                    const audio = new Audio(audioButton.dataset.audio);
+                                    audio.play();
+                                } else {
                                     card.classList.toggle('flipped');
                                 }
                             });
